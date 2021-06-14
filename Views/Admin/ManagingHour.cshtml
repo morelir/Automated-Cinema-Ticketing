@@ -1,0 +1,44 @@
+﻿
+@model MVC_project.Models.SCHEDULE
+@{
+    ViewBag.Title = "ManagingHour";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/Background.css" />
+<h2>Managing Hour</h2>
+@using (Html.BeginForm("ManagingHour", "Admin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.Id,"Times", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.FromTime, ViewBag.freeTimes as SelectList, "Select", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+}
+@using (Html.BeginForm("ManagingMovieHalls", "Admin", FormMethod.Get))
+{
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Back" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

@@ -1,0 +1,212 @@
+﻿@model MVC_project.Models.GalleryVM
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="~/Content/MovieGalleryCss.css" />
+
+    <title>Movies Gallery</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    @Html.ActionLink("Movies Gallery", "CurrentMovieGallery", null, new { area = "" }, new { @class = "navbar-brand" })
+                    <li class="nav-item dropdown">
+                        <a style="color: lightsalmon;" class="nav-link dropdown-toggle btnnavbar" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Order By
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @Html.ActionLink("Price increase", "PriceIncrease", null, new { @style = "color: #000000;", @class = "nav-link  btnnavbar" })
+                            @Html.ActionLink("Price decrease", "PriceDecrese", null, new { @style = "color: #000000;", @class = "nav-link  btnnavbar" })
+                            @Html.ActionLink("Most Popular", "MostPopular", null, new { @style = "color: #000000;", @class = "nav-link  btnnavbar" })
+                            @Html.ActionLink("Category", "Category", null, new { @style = "color: #000000;", @class = "nav-link  btnnavbar" })
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+
+                        @Html.ActionLink("Sale movies here!", "SaleMovies", null, new { @style = "color: lightsalmon;", @class = "nav-link  btnnavbar" })
+
+                    </li>
+
+
+                    @if (Model.user.Permission != null)
+                    {
+                        <li class="nav-item">
+                            <a type="button" data-toggle="collapse" data-target="#src_form" class="nav-link AS" style="color: aqua;">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-zoom-in" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+                                    <path d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z" />
+                                    <path fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z" />
+                                </svg>Advanced Search
+                            </a>
+                        </li>
+                    }
+
+                    @if (Model.user.Username != null && Model.user.Permission == "admin")
+                    {
+                        @Html.ActionLink("Admin Panel", "AdminPage", "Admin", null, new { @style = "color: #9cff7a;", @class = "nav-link  btnnavbar" })
+                    }
+                    @if (Model.user.Username == null)
+                    {
+                        @Html.ActionLink("Login", "Login", "Login", null, new { @style = "color: #7ad2ff;", @class = "nav-link  btnnavbar" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Sign out", "MovieGallery", "Home", null, new { @style = "color: #7ad2ff", @class = "nav-link  btnnavbar" })
+                    }
+                    @Html.ActionLink("Registration", "Registration", "Login", null, new { @style = "color: #7ad2ff", @class = "nav-link  btnnavbar" })
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <section id="src_form" class="collapse">
+        <form action="GalleryAdvancedSearch" method="post" class="d-flex flex-row bd-highlight mb-3">
+            <div class="p-2 bd-highlight">
+                @Html.LabelFor(model => model.movie.LASTDATE, "Date:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <input type="date" name="movie.LASTDATE" id="date" class="form-control" required>
+            </div>
+            <div class="p-2 bd-highlight">
+                @Html.LabelFor(model => model.FromTime, "Time:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <input type="time" name="FromTime" id="time" class="form-control" required>
+            </div>
+            <div class="p-2 bd-highlight">
+                <div class="form-group col-md-4">
+                    <label for="inputState">Category:</label>
+                    @Html.DropDownListFor(model => model.movie.GENRE, Session["genres"] as SelectList, "Choose here", new { @class = "p-2 bd-highlight", required = "required" })
+                    @Html.ValidationMessageFor(model => model.movie.GENRE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="p-2 bd-highlight">
+                @Html.LabelFor(model => model.movie.PRICE, "Price:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="d-flex justify-content-start">
+                    <input type="range" name="movie.PRICE" value="24" min="1" max="100" oninput="this.nextElementSibling.value = this.value" required>
+                    <output>24</output>
+                </div>
+            </div>
+            <div class="p-2 bd-highlight">
+                <button type="submit" class="btn btn-outline-success" id="btnsrc">Search</button>
+            </div>
+        </form>
+    </section>
+   
+    @if (Model.user.Username != null)
+    {
+        
+            <h2><a style="color:#7d7d7d;" class="navbar-text" text="#">&emsp;Welcome @Model.user.Username</a></h2>
+        
+    }
+    
+
+    @*<label for="data">Date:</label>
+        <input type="date" name="date" id="date" class="form-control">*@
+
+    @*<label for="time">Time:</label>
+        <input type="time" name="time" value="@Model.movie.AmountOfTime" id="time" class="form-control">
+    *@
+
+    @*<label for="price">Price:</label>
+           <div class="d-flex justify-content-start">
+               <input type="range" name="range" value="24" min="1" max="100" oninput="this.nextElementSibling.value = this.value">
+               <output>24</output>
+        </div>*@
+
+    @*<select id="inputState" class="form-control" style="width: 150px;">
+            <option selected disabled value="">Choose here...</option>
+            <option>Action</option>
+            <option>Drama</option>
+            <option>Comedy</option>
+        </select>*@
+    <!-- -----------Libary of movies:------------------ -->
+    <article>
+        <div class="navbar" id="continer_movie">
+            @for (int i = Model.movies.Count() - 1; i >= 0; i--)
+            {
+                <div class="distance">
+                    <div class="card" style="width: 18rem;">
+                        <img src="@Url.Content(Model.movies.ElementAt(i).PicturePath)" class="card-img-top" alt="..." name="pic" style="height: 25rem">
+
+                        <div class="card-body">
+                             <h5 class="card-title">@Model.movies.ElementAt(i).NAME</h5>
+                            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"> <u>Category:</u> @Model.movies.ElementAt(i).GENRE</li>
+                            <li class="list-group-item"> <u>Age:</u> @Model.movies.ElementAt(i).AGE_LIMITAION+</li>
+                            <li class="list-group-item"> <u>Price:</u> @Model.movies.ElementAt(i).PRICE$</li>
+                            <li class="list-group-item"> <u>Last Date:</u> @Model.movies.ElementAt(i).LASTDATE.ToShortDateString()</li>
+                        </ul>
+                        <div class="card-body">
+                            <form action="MovieScheduleDate" method="post">
+                                <input type="text" name="index" value="@i" hidden />
+                                <input id="Submit1" class="btn btn-outline-success" type="submit" value="To order a ticket click here!" />
+                            </form>
+
+                            @*<a href="#" class="card-link" onClick="open_order(this.id,@i)">To order a ticket click here!</a>*@
+
+                            <!-- <a href="#" class="card-link">Another link</a> -->
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </article>
+    <!-- ----הזמנת סרט----- : -->
+    <footer>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="card-body">
+                    <p id="phide">llsdgsdgsdgsdgsdfasdasf</p>
+                    <h5 class="card-title font-italic"> (Name) </h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <u>Date:</u>
+                        <select id="inputState" class="form-control" style="width: 150px;">
+                            <option selected disabled value="">Choose here...</option>
+                            <option>15/2/2021</option>
+                            <option>20/6/2021</option>
+                            <option>4/8/2021</option>
+                        </select>
+                    </li>
+                    <li class="list-group-item">
+                        <u>Time:</u>
+                        <select id="inputState" class="form-control" style="width: 150px;">
+                            <option selected disabled value="">Choose here...</option>
+                            <option>15:15</option>
+                            <option>20:10</option>
+                            <option>18:00</option>
+                        </select>
+                    </li>
+                    <form action="" method="post">
+                        <li class="list-group-item"><u>Location:</u> </li>
+                        <button type="submit" class="btn btn-danger" style="margin: 10px;">Order now</button>
+                    </form>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/Scripts/orderMovie.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

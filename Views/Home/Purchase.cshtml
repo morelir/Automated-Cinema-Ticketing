@@ -1,0 +1,141 @@
+﻿@model MVC_project.Models.PurchaseVM
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" type="text/css" href="~/Content/Background.css" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Purchase</title>
+</head>
+<body>
+    @using (Html.BeginForm("PurchaseConfirm", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="contentcontainer med left" style="margin-left: 70px;">
+            <h4>Movie Order</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <dt>
+                @Html.DisplayNameFor(model => model.order.Movie)
+                @Html.DisplayFor(model => model.order.Movie)
+            </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.order.HallNumber)
+                @Html.DisplayFor(model => model.order.HallNumber)
+            </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.order.Date)
+                @ViewData["date"]
+            </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.order.FromTime)
+                @Html.DisplayFor(model => model.order.FromTime)
+            </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.order.ToTime)
+
+                @Html.DisplayFor(model => model.order.ToTime)
+            </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.order.Price)
+
+                @Html.DisplayFor(model => model.order.Price)₪
+
+            </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.order.Line)
+
+                @Html.DisplayFor(model => model.order.Line)
+            </dt>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.order.Chair)
+
+                @Html.DisplayFor(model => model.order.Chair)
+
+            </dt>
+            <hr />
+        </div>
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.order.FirstName, "First Name:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.order.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.order.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.order.LastName, "Last Name:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.order.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.order.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.order.PersonId, "ID:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.order.PersonId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.order.PersonId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.payment.CardNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.payment.CardNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.payment.CardNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.payment.ExpirationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.payment.ExpirationDate, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.payment.ExpirationDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.payment.CVC, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.payment.CVC, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.payment.CVC, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="popup" onClick="Purchase()" value="Confirm" class="btn btn-default" />
+
+                </div>
+            </div>
+        </div>
+    }
+    @*Purchase Notification*@
+    <script>
+        function Purchase() {
+            alert("ordered successfully");
+        }
+    </script>
+    <div>
+        @Html.ActionLink("Back to Gallery", "CurrentMovieGallery")
+    </div>
+    <script src="~/Scripts/orderMovie.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

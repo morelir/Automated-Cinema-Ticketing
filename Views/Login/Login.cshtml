@@ -1,0 +1,56 @@
+﻿@model MVC_project.Models.USER
+@{
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="~/Content/adminLoginStyle.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Background.css" />
+    <title>Login</title>
+</head>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<body>
+
+    <header><h1>Login</h1></header>
+    <article>
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+        {
+
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Username)
+            </div>
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password)
+            </div>
+
+            <p><input type="submit" name="submit" value="Login" class="styleinput"></p>
+            <div>
+                @Html.ActionLink("Back to Gallery", "CurrentMovieGallery", "Home")
+            </div>
+            @Html.ValidationSummary()
+
+        }
+
+        @if (ViewBag.flag == false)
+        {
+            <label style="font-weight: bolder; color: #000000; font-style: normal;">The username or password is inccorect</label>
+
+        }
+    </article>
+
+</body>
+
+</html>
+

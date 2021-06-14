@@ -1,0 +1,54 @@
+﻿
+@model MVC_project.Models.GalleryVM
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @Styles.Render("~/Content/css")
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/Background.css" />
+
+    <title>MovieScheduleDate</title>
+</head>
+<body>
+    @using (Html.BeginForm("MovieHall", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>&emsp;&emsp;&emsp;@ViewData["MovieName"]</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="p-2 bd-highlight">
+                @Html.LabelFor(model => model.schedule.Id,"Select a time:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="form-group col-md-4">
+                    @Html.DropDownListFor(model => model.schedule.FromTime, ViewData["hours"] as SelectList, "Choose here", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.schedule.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.ActionLink("Back to date", "CurrentMovieScheduleDate")
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to Gallery", "CurrentMovieGallery")
+    </div>
+
+
+</body>
+</html>

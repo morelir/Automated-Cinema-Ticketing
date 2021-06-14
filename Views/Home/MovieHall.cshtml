@@ -1,0 +1,78 @@
+﻿@model MVC_project.Models.Seats
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="~/Content/Background.css" />
+
+<html>
+<head>
+    @*@Styles.Render("~/Content/css")*@
+    <link rel="stylesheet" type="text/css" href="~/Content/MovieHall.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>MovieHall</title>
+</head>
+
+<body>
+    @using (Html.BeginForm("Purchase", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="wrapper">
+            @*form-horizontal*@
+
+        <h4 @*style="text-align: center;"*@>@ViewData["MovieName"]</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="wrapper">
+            <div class="wrapper ">
+
+                @for (int i = 1; i <= (int)ViewData["Lines"]; i++)
+                {
+                    for (int j = 1; j <= (int)ViewData["ChairsInLine"]; j++)
+                    {
+
+                        if (Model.caught.Any(x => x.line == i && x.chair == j))
+                        {
+                            <button type="button" class="btn btn-danger"></button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-success" id=@i@j onclick="SwitchToOff(this.id,@i,@j)"></button>
+                        }
+                    }
+                    <br />
+                }
+            </div>@*btn-outline-success*@
+        </div>
+        <br />
+        <br />
+        <div class="wrapper">
+            <div class="wrapper">
+                <input type="submit" value="Purchase" class="btn btn-primary" />
+                <input type="text" name="line" value="" id="line" hidden required />
+                <input type="text" name="chair" value="" id="chair" hidden required />
+            </div>
+        </div>
+
+        <div class="wrapper">
+            @Html.ActionLink("Back to hour", "CurrentMovieScheduleDate")
+        </div>
+    </div>
+}
+    <div class="wrapper">
+        @Html.ActionLink("Back to Gallery", "CurrentMovieGallery")
+    </div>
+    
+    <script src="~/Scripts/orderMovie.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
